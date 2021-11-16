@@ -234,12 +234,11 @@ function text_input_reactor() {
     } else {
       $("#textInput").css("width", textArray[word_count].length * 16 + "px");
     }
-
-    $("#textInput").css(
-      "transform",
-      "translateX(" + text_input_position + "px)"
-    );
   }
+  $("#textInput").css(
+    "transform",
+    "translateX(" + text_input_position + "px)"
+  );
 }
 
 // function for the timer
@@ -425,6 +424,46 @@ $("#textInput").click(function () {
   current_word_blinker();
 });
 
+function space_click_on_test(){
+  if ($("#textInput").val() == "" || $("#textInput").val() == " ") {
+    event.preventDefault();
+    $("#textInput").val(null);
+  } else {  
+    $("#" + word_count).removeClass("current_word");
+    $("#" + word_count).addClass("correct");
+    $("#" + word_count).removeClass("wrong_warning");
+    $("#" + word_count).removeClass("correct_warning");
+
+    if (wrong || entered_value.length < current_word.length) {
+      $("#" + word_count).removeClass("correct");
+      $("#" + word_count).addClass("red");
+      wrong_word++;
+      correct_word--;
+    }
+    keystrokes_needed += current_word.length;
+    correct_word++;
+    word_count++;
+    wrong = false;
+
+    current_word_position =
+      $("#" + word_count).offset().left -
+      $("#" + word_count)
+        .parent()
+        .offset().left;
+
+    text_input_position = current_word_position - 8;
+
+    if (current_word_position == 5) {
+      line_scroll(translateY_counter);
+    }
+
+    $("#textInput").val(null);
+    text_input_reactor();
+    $("#" + word_count).addClass("current_word");
+    current_word_blinker();
+  }
+}
+
 $("#textInput").keyup(function (event) {
   entered_value = $("#textInput").val().replace(/\s/g, "");
   current_word = textArray[word_count];
@@ -470,70 +509,35 @@ $("#textInput").keyup(function (event) {
     startTimer(mytime, display);
   }
 
-  if (
-    entered_value != current_word.slice(0, entered_value.length) &&
-    event.keyCode != 32
-  ) {
-    $("#" + word_count).removeClass("correct_warning");
-    $("#" + word_count).addClass("wrong_warning");
-    wrong = true;
-  } else if (
-    wrong &&
-    current_word.slice(0, entered_value.length) == entered_value
-  ) {
-    $("#" + word_count).removeClass("wrong_warning");
-    wrong = false;
-    if (entered_value == current_word) {
-      $("#" + word_count).addClass("correct_warning");
-    }
-    current_word_blinker();
-  } else if (entered_value == current_word && event.keyCode != 32) {
-    $("#" + word_count).addClass("correct_warning");
-  } else if (entered_value.length < current_word.length) {
-    $("#" + word_count).removeClass("correct_warning");
-    current_word_blinker();
-  }
+
   if (pressed_key == 32 || event.keyCode == 32) {
-    if ($("#textInput").val() == "" || $("#textInput").val() == " ") {
-      event.preventDefault();
-      $("#textInput").val(null);
-    } else {  
-      $("#" + word_count).removeClass("current_word");
-      $("#" + word_count).addClass("correct");
-      $("#" + word_count).removeClass("wrong_warning");
+    space_click_on_test()
+  }else{
+    keystrokes++
+    if (
+      entered_value != current_word.slice(0, entered_value.length) &&
+      event.keyCode != 32
+    ) {
       $("#" + word_count).removeClass("correct_warning");
-
-      if (wrong || entered_value.length < current_word.length) {
-        $("#" + word_count).removeClass("correct");
-        $("#" + word_count).addClass("red");
-        wrong_word++;
-        correct_word--;
-      }
-      keystrokes_needed += current_word.length;
-      correct_word++;
-      word_count++;
+      $("#" + word_count).addClass("wrong_warning");
+      wrong = true;
+    } else if (
+      wrong &&
+      current_word.slice(0, entered_value.length) == entered_value
+    ) {
+      $("#" + word_count).removeClass("wrong_warning");
       wrong = false;
-
-      current_word_position =
-        $("#" + word_count).offset().left -
-        $("#" + word_count)
-          .parent()
-          .offset().left;
-
-      text_input_position = current_word_position - 8;
-
-      if (current_word_position == 5) {
-        line_scroll(translateY_counter);
+      if (entered_value == current_word) {
+        $("#" + word_count).addClass("correct_warning");
       }
-
-      $("#textInput").val(null);
-      text_input_reactor();
-      $("#" + word_count).addClass("current_word");
       current_word_blinker();
-    }
+    } else if (entered_value == current_word && event.keyCode != 32) {
+      $("#" + word_count).addClass("correct_warning");
+    } else if (entered_value.length < current_word.length) {
+      $("#" + word_count).removeClass("correct_warning");
+      current_word_blinker();
+    }  
   }
-
-  keystrokes++;
   current_word_blinker();
 });
 
@@ -543,45 +547,7 @@ $("#textInput").keydown(function (event){
   pressed_key = String($("#textInput").val().slice(-1)).charCodeAt(0);
 
   if (pressed_key == 32 || event.keyCode == 32) {
-    if ($("#textInput").val() == "" || $("#textInput").val() == " ") {
-      event.preventDefault();
-      $("#textInput").val(null);
-    } else {
-      keystrokes--;
-      $("#" + word_count).removeClass("current_word");
-      $("#" + word_count).addClass("correct");
-      $("#" + word_count).removeClass("wrong_warning");
-      $("#" + word_count).removeClass("correct_warning");
-
-      if (wrong || entered_value.length < current_word.length) {
-        $("#" + word_count).removeClass("correct");
-        $("#" + word_count).addClass("red");
-        wrong_word++;
-        correct_word--;
-      }
-      keystrokes_needed += current_word.length;
-      correct_word++;
-      word_count++;
-      wrong = false;
-
-      current_word_position =
-        $("#" + word_count).offset().left -
-        $("#" + word_count)
-          .parent()
-          .offset().left;
-
-      text_input_position = current_word_position - 8;
-
-      if (current_word_position == 5) {
-        line_scroll(translateY_counter);
-      }
-
-      $("#textInput").val(null);
-      text_input_reactor();
-      $("#" + word_count).addClass("current_word");
-      current_word_blinker();
-    }
+    space_click_on_test()
   }
-  current_word_blinker();
 
 })
