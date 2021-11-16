@@ -129,7 +129,6 @@ header > * {
   text-align: center;
   border: none;
   border-radius: 3px;
-  caret-color: transparent;
   transition: transform 200ms ease;
 }
 
