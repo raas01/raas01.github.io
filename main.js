@@ -1,5 +1,4 @@
 // dictionary contains 100 words
-alert('hello')
 dictionary = [
   "when",
   "into",
@@ -226,19 +225,14 @@ function text_input_reactor() {
   if (window_less_than_425 && window_less_than_800) {
     if (textArray[word_count].length < 3) {
       $("#textInput").css("width", textArray[word_count].length * 14 + "px");
-      new_text_input_position = text_input_position+2
-      $("#textInput").css(
-        "transform",
-        "translateX(" + new_text_input_position + "px)"
-      );
     } else {
       $("#textInput").css("width", textArray[word_count].length * 14 + "px");
-      new_text_input_position = text_input_position-5
-      $("#textInput").css(
-        "transform",
-        "translateX(" + new_text_input_position + "px)"
-      );
     }
+    new_text_input_position = text_input_position+1
+    $("#textInput").css(
+      "transform",
+      "translateX(" + new_text_input_position + "px)"
+    );  
     
   } else {
     if (textArray[word_count].length < 3) {
