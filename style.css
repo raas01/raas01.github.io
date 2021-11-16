@@ -381,10 +381,10 @@ header > * {
     border: none;
     color: #000000;
   }
-  .textInput_wrapper {
+  /* .textInput_wrapper {
     display: flex;
     justify-content: center;
-  }
+  } */
 }
 
 @media screen and (max-width: 325px) {
