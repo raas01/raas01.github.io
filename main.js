@@ -1,4 +1,5 @@
 // dictionary contains 100 words
+alert('almost')
 dictionary = [
   "when",
   "into",
